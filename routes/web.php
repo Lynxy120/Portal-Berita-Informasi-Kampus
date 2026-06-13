@@ -1,19 +1,23 @@
 <?php
 
+use App\Models\Article;
+use App\Models\ArticleComment;
+use App\Models\Category;
+use App\Models\Tag;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome')->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::view('dashboard', 'dashboard')->name('dashboard');
+
+    Route::get('/dashboard', function () {
+        return view('dashboard', [
+            'articleCount' => Article::query()->count(),
+            'categoryCount' => Category::query()->count(),
+            'tagCount' => Tag::query()->count(),
+            'commentCount' => ArticleComment::query()->count(),
+        ]);
+    })->name('dashboard');
 });
-
-Route::get('/admin-test', function () {
-    return 'Admin Area';
-})->middleware(['auth', 'role:admin']);
-
-Route::get('/editor-test', function () {
-    return 'Editor Area';
-})->middleware(['auth', 'role:admin,editor']);
 
 require __DIR__ . '/settings.php';

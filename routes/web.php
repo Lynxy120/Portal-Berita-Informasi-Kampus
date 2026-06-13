@@ -8,4 +8,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
 });
 
-require __DIR__.'/settings.php';
+Route::get('/admin-test', function () {
+    return 'Admin Area';
+})->middleware(['auth', 'role:admin']);
+
+Route::get('/editor-test', function () {
+    return 'Editor Area';
+})->middleware(['auth', 'role:admin,editor']);
+
+require __DIR__ . '/settings.php';

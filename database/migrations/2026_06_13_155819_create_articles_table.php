@@ -13,36 +13,18 @@ return new class extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
-
-            $table->foreignId('user_id')
-                ->constrained()
-                ->cascadeOnDelete();
-
-            $table->foreignId('category_id')
-                ->constrained()
-                ->cascadeOnDelete();
-
-            $table->string('title');
-            $table->string('slug')->unique();
-
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('category_id')->constrained()->onDelete('restrict');
+            $table->foreignId('music_track_id')->nullable()->constrained()->nullOnDelete();
+            $table->string('title', 255);
+            $table->string('slug', 255)->unique();
             $table->longText('content');
-
             $table->text('excerpt')->nullable();
-
             $table->string('thumbnail')->nullable();
-
             $table->unsignedInteger('views')->default(0);
-
             $table->boolean('is_featured')->default(false);
-
+            $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
             $table->timestamp('published_at')->nullable();
-
-            $table->enum('status', [
-                'draft',
-                'published',
-                'archived'
-            ])->default('draft');
-
             $table->timestamps();
         });
     }

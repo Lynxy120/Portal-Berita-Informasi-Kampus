@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('newsletter_subscribers', function (Blueprint $table) {
+        Schema::create('music_tracks', function (Blueprint $table) {
             $table->id();
-            $table->string('email')->unique();
+            $table->string('spotify_track_id', 100);
+            $table->string('title', 255);
+            $table->string('artist', 255);
+            $table->text('preview_url');
             $table->timestamps();
         });
     }
@@ -23,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('newsletter_subscribers');
+        Schema::dropIfExists('music_tracks');
     }
 };

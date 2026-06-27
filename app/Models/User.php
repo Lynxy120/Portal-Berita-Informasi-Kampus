@@ -14,18 +14,14 @@ use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\PasskeyUser;
 use Laravel\Fortify\PasskeyAuthenticatable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Laravel\Sanctum\HasApiTokens;
 
-#[Fillable([
-    'name',
-    'email',
-    'password',
-    'role'
-])]
+#[Fillable(['name', 'email', 'google_id', 'avatar', 'role', 'password'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable implements PasskeyUser
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, PasskeyAuthenticatable, TwoFactorAuthenticatable;
+    use HasFactory, Notifiable, PasskeyAuthenticatable, TwoFactorAuthenticatable, HasApiTokens;
 
     /**
      * Get the attributes that should be cast.
@@ -56,5 +52,20 @@ class User extends Authenticatable implements PasskeyUser
     public function articles()
     {
         return $this->hasMany(Article::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(ArticleComment::class);
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isEditor()
+    {
+        return $this->role === 'editor';
     }
 }

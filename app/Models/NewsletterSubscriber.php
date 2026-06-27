@@ -6,8 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class NewsletterSubscriber extends Model
 {
-    protected $fillable = [
-        'email',
-        'is_active',
-    ];
+    protected $fillable = ['email'];
 }
